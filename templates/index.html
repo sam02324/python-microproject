@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Hotel Management{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 40px 0;">
+    <h2 style="color: #667eea; margin-bottom: 20px;">Welcome to {{ hotel_name }}</h2>
+    <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
+        Your comfort is our priority. Book your perfect room today!
+    </p>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px;">
+        <div style="background: #f0f4ff; padding: 30px; border-radius: 10px; width: 250px;">
+            <h3 style="color: #667eea; margin-bottom: 15px;">🏨 View Rooms</h3>
+            <p style="margin-bottom: 20px; color: #666;">Browse our available rooms</p>
+            <a href="{{ url_for('view_rooms') }}" class="btn">View Rooms</a>
+        </div>
+        
+        <div style="background: #f0f4ff; padding: 30px; border-radius: 10px; width: 250px;">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📅 Book Now</h3>
+            <p style="margin-bottom: 20px; color: #666;">Reserve your room today</p>
+            <a href="{{ url_for('book_room') }}" class="btn">Book Room</a>
+        </div>
+        
+        <div style="background: #f0f4ff; padding: 30px; border-radius: 10px; width: 250px;">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📋 My Bookings</h3>
+            <p style="margin-bottom: 20px; color: #666;">View your reservations</p>
+            <a href="{{ url_for('view_bookings') }}" class="btn">View Bookings</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

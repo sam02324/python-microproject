@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<h2 style="color: #667eea; margin-bottom: 20px;">Process Payment</h2>
+
+<form method="POST" action="{{ url_for('payment') }}">
+    <div class="form-group">
+        <label for="booking_id">Booking ID:</label>
+        <input type="number" id="booking_id" name="booking_id" placeholder="Enter your booking ID" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="amount_paid">Amount to Pay ($):</label>
+        <input type="number" id="amount_paid" name="amount_paid" step="0.01" placeholder="Enter amount" required>
+    </div>
+    
+    <button type="submit" class="btn btn-success">Process Payment</button>
+    <a href="{{ url_for('index') }}" class="btn">Cancel</a>
+</form>
+
+<div style="margin-top: 30px; padding: 20px; background: #f0f4ff; border-radius: 5px;">
+    <h3 style="color: #667eea;">Payment Information:</h3>
+    <ul style="margin-top: 10px; margin-left: 20px; color: #666;">
+        <li>Payment must be completed before check-out</li>
+        <li>Enter the exact amount or more (change will be calculated)</li>
+        <li>Keep your booking ID for reference</li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Room{% endblock %}
+
+{% block content %}
+<h2 style="color: #667eea; margin-bottom: 20px;">Book a Room</h2>
+
+{% if rooms %}
+<form method="POST" action="{{ url_for('book_room') }}">
+    <div class="form-group">
+        <label for="customer_name">Customer Name:</label>
+        <input type="text" id="customer_name" name="customer_name" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="room_number">Select Room:</label>
+        <select id="room_number" name="room_number" required>
+            <option value="">-- Select a Room --</option>
+            {% for room in rooms %}
+            <option value="{{ room.room_number }}">
+                Room {{ room.room_number }} - {{ room.room_type }} - ${{ room.price_per_night }}/night
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="check_in">Check-In Date:</label>
+        <input type="date" id="check_in" name="check_in" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="check_out">Check-Out Date:</label>
+        <input type="date" id="check_out" name="check_out" required>
+    </div>
+    
+    <button type="submit" class="btn btn-success">Create Booking</button>
+    <a href="{{ url_for('index') }}" class="btn">Cancel</a>
+</form>
+{% else %}
+<p style="color: #666; font-size: 18px;">No rooms available for booking at the moment.</p>
+<a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+{% endif %}
+{% endblock %}
