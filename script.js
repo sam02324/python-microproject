@@ -1,5 +1,3 @@
-// Hotel Management System - JavaScript
-
 class Room {
     constructor(roomNumber, roomType, pricePerNight, isAvailable = true) {
         this.roomNumber = roomNumber;
@@ -31,7 +29,7 @@ class Hotel {
         this.bookingCounter = 1000;
         this.loadData();
         
-        // Initialize rooms if empty
+
         if (this.rooms.length === 0) {
             this.addRoom(101, "Single", 100);
             this.addRoom(102, "Single", 100);
@@ -44,8 +42,7 @@ class Hotel {
     }
     
     addRoom(roomNumber, roomType, pricePerNight) {
-        const room = new Room(roomNumber, roomType, pricePerNight);
-        this.rooms.push(room);
+        this.rooms.push(new Room(roomNumber, roomType, pricePerNight));
     }
     
     getAvailableRooms() {
@@ -169,34 +166,23 @@ class Hotel {
     }
 }
 
-// Initialize hotel
 const hotel = new Hotel("Grand Plaza Hotel");
-
-// Navigation
 function showSection(sectionId) {
-    // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
         section.classList.remove('active');
     });
     
-    // Remove active from all nav buttons
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     
-    // Show selected section
     document.getElementById(sectionId).classList.add('active');
-    
-    // Set active nav button
     event.target.classList.add('active');
     
-    // Refresh content
     if (sectionId === 'rooms') displayRooms();
     if (sectionId === 'book') loadBookingForm();
     if (sectionId === 'bookings') displayBookings();
 }
-
-// Alert system
 function showAlert(message, type = 'success') {
     const alertContainer = document.getElementById('alert-container');
     const alert = document.createElement('div');
@@ -209,8 +195,6 @@ function showAlert(message, type = 'success') {
         alert.remove();
     }, 4000);
 }
-
-// Display available rooms
 function displayRooms() {
     const roomsList = document.getElementById('rooms-list');
     const availableRooms = hotel.getAvailableRooms();
@@ -229,8 +213,6 @@ function displayRooms() {
         </div>
     `).join('');
 }
-
-// Load booking form
 function loadBookingForm() {
     const roomSelect = document.getElementById('room_select');
     const availableRooms = hotel.getAvailableRooms();
@@ -239,14 +221,10 @@ function loadBookingForm() {
         availableRooms.map(room => 
             `<option value="${room.roomNumber}">${room.roomNumber} - ${room.roomType} - $${room.pricePerNight}/night</option>`
         ).join('');
-    
-    // Set min date to today
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('check_in').min = today;
     document.getElementById('check_out').min = today;
 }
-
-// Calculate and preview price
 document.addEventListener('DOMContentLoaded', () => {
     const checkInInput = document.getElementById('check_in');
     const checkOutInput = document.getElementById('check_out');
@@ -278,8 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
     checkOutInput.addEventListener('change', updatePricePreview);
     roomSelect.addEventListener('change', updatePricePreview);
 });
-
-// Display all bookings
 function displayBookings() {
     const bookingsList = document.getElementById('bookings-list');
     
@@ -326,8 +302,6 @@ function displayBookings() {
         </div>
     `;
 }
-
-// Form handlers
 document.getElementById('booking-form').addEventListener('submit', (e) => {
     e.preventDefault();
     
@@ -394,7 +368,5 @@ document.getElementById('checkout-form').addEventListener('submit', (e) => {
         showAlert(result.message, 'error');
     }
 });
-
-// Initialize on page load
 displayRooms();
 displayBookings();
