@@ -1,6 +1,6 @@
 # Hotel Management System
 
-A Python Flask web application for hotel room management with booking, check-in/out, and payment processing.
+A Python-based hotel management system with both command-line and web interfaces for room booking, check-in/out, and payment processing.
 
 ## Features
 
@@ -10,7 +10,7 @@ A Python Flask web application for hotel room management with booking, check-in/
 - Process payments
 - Check-out customers
 - Data persistence using JSON file
-- Dark modern UI design
+- Dark modern UI for web version
 
 ## Technologies Used
 
@@ -18,10 +18,11 @@ A Python Flask web application for hotel room management with booking, check-in/
 - Flask (Web Framework)
 - HTML5/CSS3
 - JSON for data storage
+- datetime module
 
 ## Installation
 
-1. Install Flask:
+Install Flask for the web version:
 ```bash
 pip install Flask
 ```
@@ -33,17 +34,23 @@ pip install -r requirements.txt
 
 ## How to Run
 
+### Command-Line Version (Core Python Logic)
+```bash
+python hotel_management.py
+```
+
+### Web Version (Flask)
 ```bash
 python app.py
 ```
-
 Then open your browser and visit: `http://127.0.0.1:5000`
 
 ## Project Structure
 
 ```
 hotel-management/
-├── app.py                 # Main Flask application
+├── hotel_management.py    # Command-line version (core logic)
+├── app.py                 # Flask web application
 ├── requirements.txt       # Python dependencies
 ├── hotel_data.json       # Data storage (auto-generated)
 ├── static/
@@ -59,11 +66,13 @@ hotel-management/
     └── checkout.html
 ```
 
-## Python Concepts Used
+## Python Concepts Demonstrated
 
 - Object-Oriented Programming (Classes: Room, Booking, Hotel)
-- Flask web framework (Routes, Templates, Forms)
 - File I/O (JSON for data persistence)
 - datetime module for date calculations
 - List comprehensions
 - Exception handling
+- Flask web framework (Routes, Templates, Forms)
+- String formatting
+- Control flow (loops, conditionals)
