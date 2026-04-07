@@ -211,6 +211,12 @@ h2 {
     transition: all 0.3s ease;
 }
 
+.form-group select option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 10px;
+}
+
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
@@ -363,4 +369,27 @@ table tr:hover {
     .rooms-grid {
         grid-template-columns: 1fr;
     }
+}
+
+
+.price-preview {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid var(--accent);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: var(--accent);
+    font-weight: 600;
+    display: none;
+}
+
+.price-preview:not(:empty) {
+    display: block;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
 }

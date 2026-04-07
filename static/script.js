@@ -217,47 +217,51 @@ function loadBookingForm() {
     const roomSelect = document.getElementById('room_select');
     const availableRooms = hotel.getAvailableRooms();
     
+    if (!roomSelect) return;
+    
     roomSelect.innerHTML = '<option value="">-- Select a Room --</option>' +
         availableRooms.map(room => 
-            `<option value="${room.roomNumber}">${room.roomNumber} - ${room.roomType} - $${room.pricePerNight}/night</option>`
+            `<option value="${room.roomNumber}">Room ${room.roomNumber} - ${room.roomType} - $${room.pricePerNight}/night</option>`
         ).join('');
     
     const today = new Date().toISOString().split('T')[0];
-    document.getElementById('check_in').min = today;
-    document.getElementById('check_out').min = today;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
     const checkInInput = document.getElementById('check_in');
     const checkOutInput = document.getElementById('check_out');
+    
+    if (checkInInput) checkInInput.min = today;
+    if (checkOutInput) checkOutInput.min = today;
+}
+
+function updatePricePreview() {
     const roomSelect = document.getElementById('room_select');
+    const checkInInput = document.getElementById('check_in');
+    const checkOutInput = document.getElementById('check_out');
     const pricePreview = document.getElementById('price-preview');
     
-    function updatePricePreview() {
-        const roomNumber = parseInt(roomSelect.value);
-        const checkIn = checkInInput.value;
-        const checkOut = checkOutInput.value;
-        
-        if (roomNumber && checkIn && checkOut) {
-            const room = hotel.rooms.find(r => r.roomNumber === roomNumber);
-            if (room) {
-                const nights = hotel.calculateNights(checkIn, checkOut);
-                if (nights > 0) {
-                    const total = nights * room.pricePerNight;
-                    pricePreview.innerHTML = `Total: ${nights} night(s) × $${room.pricePerNight} = $${total}`;
-                } else {
-                    pricePreview.innerHTML = '';
-                }
-            }
-        } else {
-            pricePreview.innerHTML = '';
-        }
-    }
+    if (!roomSelect || !checkInInput || !checkOutInput || !pricePreview) return;
     
-    checkInInput.addEventListener('change', updatePricePreview);
-    checkOutInput.addEventListener('change', updatePricePreview);
-    roomSelect.addEventListener('change', updatePricePreview);
-});
+    const roomNumber = parseInt(roomSelect.value);
+    const checkIn = checkInInput.value;
+    const checkOut = checkOutInput.value;
+    
+    if (roomNumber && checkIn && checkOut) {
+        const room = hotel.rooms.find(r => r.roomNumber === roomNumber);
+        if (room) {
+            const nights = hotel.calculateNights(checkIn, checkOut);
+            if (nights > 0) {
+                const total = nights * room.pricePerNight;
+                pricePreview.innerHTML = `Total: ${nights} night(s) × $${room.pricePerNight} = $${total}`;
+                pricePreview.style.display = 'block';
+            } else {
+                pricePreview.innerHTML = '';
+                pricePreview.style.display = 'none';
+            }
+        }
+    } else {
+        pricePreview.innerHTML = '';
+        pricePreview.style.display = 'none';
+    }
+}
 
 function displayBookings() {
     const bookingsList = document.getElementById('bookings-list');
@@ -306,72 +310,96 @@ function displayBookings() {
     `;
 }
 
-document.getElementById('booking-form').addEventListener('submit', (e) => {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+    const checkInInput = document.getElementById('check_in');
+    const checkOutInput = document.getElementById('check_out');
+    const roomSelect = document.getElementById('room_select');
     
-    const customerName = document.getElementById('customer_name').value;
-    const roomNumber = parseInt(document.getElementById('room_select').value);
-    const checkIn = document.getElementById('check_in').value;
-    const checkOut = document.getElementById('check_out').value;
+    if (checkInInput) checkInInput.addEventListener('change', updatePricePreview);
+    if (checkOutInput) checkOutInput.addEventListener('change', updatePricePreview);
+    if (roomSelect) roomSelect.addEventListener('change', updatePricePreview);
     
-    const booking = hotel.createBooking(customerName, roomNumber, checkIn, checkOut);
-    
-    if (booking) {
-        showAlert(`Booking successful! Your Booking ID is: ${booking.bookingId}`, 'success');
-        e.target.reset();
-        document.getElementById('price-preview').innerHTML = '';
-    } else {
-        showAlert('Booking failed! Please check room availability and dates.', 'error');
+    const bookingForm = document.getElementById('booking-form');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const customerName = document.getElementById('customer_name').value;
+            const roomNumber = parseInt(document.getElementById('room_select').value);
+            const checkIn = document.getElementById('check_in').value;
+            const checkOut = document.getElementById('check_out').value;
+            
+            const booking = hotel.createBooking(customerName, roomNumber, checkIn, checkOut);
+            
+            if (booking) {
+                showAlert(`Booking successful! Your Booking ID is: ${booking.bookingId}`, 'success');
+                e.target.reset();
+                document.getElementById('price-preview').innerHTML = '';
+                loadBookingForm();
+            } else {
+                showAlert('Booking failed! Please check room availability and dates.', 'error');
+            }
+        });
     }
-});
-
-document.getElementById('checkin-form').addEventListener('submit', (e) => {
-    e.preventDefault();
     
-    const bookingId = parseInt(document.getElementById('checkin_booking_id').value);
-    
-    if (hotel.checkIn(bookingId)) {
-        showAlert(`Check-in successful for Booking ID: ${bookingId}`, 'success');
-        e.target.reset();
-    } else {
-        showAlert('Check-in failed! Please verify booking ID.', 'error');
+    const checkinForm = document.getElementById('checkin-form');
+    if (checkinForm) {
+        checkinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const bookingId = parseInt(document.getElementById('checkin_booking_id').value);
+            
+            if (hotel.checkIn(bookingId)) {
+                showAlert(`Check-in successful for Booking ID: ${bookingId}`, 'success');
+                e.target.reset();
+            } else {
+                showAlert('Check-in failed! Please verify booking ID.', 'error');
+            }
+        });
     }
-});
-
-document.getElementById('payment-form').addEventListener('submit', (e) => {
-    e.preventDefault();
     
-    const bookingId = parseInt(document.getElementById('payment_booking_id').value);
-    const amountPaid = parseFloat(document.getElementById('amount_paid').value);
-    
-    const booking = hotel.findBooking(bookingId);
-    
-    if (booking && hotel.processPayment(bookingId, amountPaid)) {
-        const change = amountPaid - booking.totalAmount;
-        let message = `Payment successful for Booking ID: ${bookingId}`;
-        if (change > 0) {
-            message += ` | Change: $${change.toFixed(2)}`;
-        }
-        showAlert(message, 'success');
-        e.target.reset();
-    } else {
-        showAlert('Payment failed! Please check booking ID and amount.', 'error');
+    const paymentForm = document.getElementById('payment-form');
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const bookingId = parseInt(document.getElementById('payment_booking_id').value);
+            const amountPaid = parseFloat(document.getElementById('amount_paid').value);
+            
+            const booking = hotel.findBooking(bookingId);
+            
+            if (booking && hotel.processPayment(bookingId, amountPaid)) {
+                const change = amountPaid - booking.totalAmount;
+                let message = `Payment successful for Booking ID: ${bookingId}`;
+                if (change > 0) {
+                    message += ` | Change: $${change.toFixed(2)}`;
+                }
+                showAlert(message, 'success');
+                e.target.reset();
+            } else {
+                showAlert('Payment failed! Please check booking ID and amount.', 'error');
+            }
+        });
     }
-});
-
-document.getElementById('checkout-form').addEventListener('submit', (e) => {
-    e.preventDefault();
     
-    const bookingId = parseInt(document.getElementById('checkout_booking_id').value);
-    const result = hotel.checkOut(bookingId);
-    
-    if (result.success) {
-        showAlert(result.message, 'success');
-        e.target.reset();
-    } else {
-        showAlert(result.message, 'error');
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const bookingId = parseInt(document.getElementById('checkout_booking_id').value);
+            const result = hotel.checkOut(bookingId);
+            
+            if (result.success) {
+                showAlert(result.message, 'success');
+                e.target.reset();
+            } else {
+                showAlert(result.message, 'error');
+            }
+        });
     }
+    
+    displayRooms();
+    displayBookings();
+    loadBookingForm();
 });
-
-displayRooms();
-displayBookings();
