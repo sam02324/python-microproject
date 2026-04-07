@@ -67,91 +67,51 @@ nav {
     z-index: 100;
 }
 
-.nav-btn {
-    background: transparent;
+nav a {
     color: var(--text-secondary);
-    border: none;
+    text-decoration: none;
     padding: 18px 28px;
-    cursor: pointer;
     font-size: 15px;
     font-weight: 500;
     transition: all 0.3s ease;
     border-bottom: 3px solid transparent;
 }
 
-.nav-btn:hover {
+nav a:hover {
     color: var(--text-primary);
     background: rgba(255, 107, 107, 0.1);
-}
-
-.nav-btn.active {
-    color: var(--accent);
     border-bottom-color: var(--accent);
 }
 
-#alert-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    max-width: 400px;
+.content {
+    padding: 50px 30px;
+    min-height: 400px;
 }
 
-.alert {
+.flash-messages {
+    margin-bottom: 20px;
+}
+
+.flash {
     padding: 18px 24px;
     margin-bottom: 12px;
     border-radius: 12px;
     font-weight: 500;
-    animation: slideIn 0.3s ease;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(400px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-.alert.success {
+.flash.success {
     background: rgba(76, 175, 80, 0.2);
     border: 1px solid var(--success);
     color: var(--success);
 }
 
-.alert.error {
+.flash.error {
     background: rgba(244, 67, 54, 0.2);
     border: 1px solid var(--danger);
     color: var(--danger);
 }
 
-.section {
-    display: none;
-    padding: 50px 30px;
-    animation: fadeIn 0.4s ease;
-}
-
-.section.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.section h2 {
+h2 {
     font-size: 2.5em;
     margin-bottom: 30px;
     font-weight: 700;
@@ -281,13 +241,10 @@ nav {
     box-shadow: 0 6px 25px rgba(255, 107, 107, 0.5);
 }
 
-.btn-success {
-    background: var(--success);
-    color: white;
-}
-
-.btn-success:hover {
-    background: #45a049;
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
 }
 
 .room-card {
@@ -295,7 +252,6 @@ nav {
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 30px;
-    margin-bottom: 20px;
     transition: all 0.3s ease;
 }
 
@@ -352,27 +308,26 @@ nav {
     border: 1px solid #2196f3;
 }
 
-.bookings-table {
-    width: 100%;
+.table-container {
     background: var(--bg-card);
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid var(--border);
 }
 
-.bookings-table table {
+table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.bookings-table th,
-.bookings-table td {
+table th,
+table td {
     padding: 18px;
     text-align: left;
     border-bottom: 1px solid var(--border);
 }
 
-.bookings-table th {
+table th {
     background: var(--bg-secondary);
     color: var(--accent);
     font-weight: 600;
@@ -381,25 +336,15 @@ nav {
     letter-spacing: 0.5px;
 }
 
-.bookings-table tr:hover {
+table tr:hover {
     background: rgba(255, 107, 107, 0.05);
 }
 
-.price-preview {
-    background: rgba(255, 107, 107, 0.1);
-    border: 1px solid var(--accent);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+.empty-message {
+    color: var(--text-secondary);
     font-size: 1.2em;
-    color: var(--accent);
-    font-weight: 600;
-}
-
-#rooms-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 25px;
+    text-align: center;
+    padding: 40px;
 }
 
 @media (max-width: 768px) {
@@ -415,7 +360,7 @@ nav {
         grid-template-columns: 1fr;
     }
     
-    #rooms-list {
+    .rooms-grid {
         grid-template-columns: 1fr;
     }
 }

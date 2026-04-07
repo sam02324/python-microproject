@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Available Rooms</h2>
+
+{% if rooms %}
+    <div class="rooms-grid">
+        {% for room in rooms %}
+        <div class="room-card">
+            <h3>Room {{ room.room_number }}</h3>
+            <p><strong>Type:</strong> {{ room.room_type }}</p>
+            <p><strong>Price:</strong> ${{ room.price_per_night }} per night</p>
+            <span class="badge badge-success">Available</span>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="empty-message">No rooms available at the moment.</p>
+{% endif %}
+{% endblock %}

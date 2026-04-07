@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h2>Welcome to {{ hotel_name }}</h2>
+    <p>Experience luxury and comfort in the heart of the city</p>
+    
+    <div class="feature-cards">
+        <div class="feature-card">
+            <div class="icon">🏨</div>
+            <h3>Premium Rooms</h3>
+            <p>Choose from Single, Double, or Suite rooms</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="icon">💳</div>
+            <h3>Easy Booking</h3>
+            <p>Simple and secure booking process</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="icon">⭐</div>
+            <h3>Best Service</h3>
+            <p>24/7 customer support</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
